@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true, //Server rendering not working without it
+    "sourceMap": true,
+    "lib": [ "es2015", "dom" ]
+  }
+}
