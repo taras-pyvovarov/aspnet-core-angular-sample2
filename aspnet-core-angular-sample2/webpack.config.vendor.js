@@ -5,8 +5,12 @@
 var rxjs = require('rxjs');
 var zonejs = require('zone.js');
 
+//Imports.
 var webpack = require('webpack');
 var path = require('path');
+
+//App hardcodes.
+var dist = 'wwwroot';
 
 module.exports = {
     entry: {
@@ -25,7 +29,7 @@ module.exports = {
 
     output: {
         filename: '[name].bundle.js',
-        path: path.join(__dirname, 'wwwroot'),
+        path: path.join(__dirname, dist),
 
         // The name of the global variable which the library's
         // require() function will be assigned to
@@ -37,7 +41,7 @@ module.exports = {
           // The path to the manifest file which maps between
           // modules included in a bundle and the internal IDs
           // within that bundle
-          path: path.join(__dirname, 'wwwroot', '[name]-manifest.json'),
+          path: path.join(__dirname, dist, '[name]-manifest.json'),
           // The name of the global variable which the library's
           // require function has been assigned to. This must match the
           // output.library option above
