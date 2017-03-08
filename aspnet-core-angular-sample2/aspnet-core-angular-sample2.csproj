@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="SampleApp1\" />
     <Folder Include="Views\" />
     <Folder Include="wwwroot_server\" />
     <Folder Include="wwwroot\" />
