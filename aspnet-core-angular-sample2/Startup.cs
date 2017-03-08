@@ -55,8 +55,8 @@ namespace aspnet_core_angular_sample2
                 app.UseDeveloperExceptionPage();
                 //Use Webpack dev middleware from aspnet core SPA services. It will host webpack live and keep sources up-to-date.
                 //Additionaly Webpack requires aspnet-webpack module to work.
-                //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions { HotModuleReplacement = true });
-                app.UseWebpackDevMiddleware();
+                //Additionaly Webpack requires webpack-hot-middleware for hot module replacement to work.
+                app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions { HotModuleReplacement = true });
             }
         }
     }
