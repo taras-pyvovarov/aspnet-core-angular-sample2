@@ -7,8 +7,9 @@ var zonejs = require('zone.js');
 
 //Imports.
 var webpack = require('webpack');
-var path = require('path');
+var merge = require('webpack-merge');
 var nodeExternals = require('webpack-node-externals');
+var path = require('path');
 
 //App hardcodes.
 const dist = 'wwwroot';
@@ -17,20 +18,13 @@ const sampleApp1Name = 'SampleApp1';
 const sampleApp1RootClient = 'root-client.ts';
 const sampleApp1RootServer = 'root-server.ts';
 
-var clientBundleConfig = {
-    entry: { 
-        'sample-app1-client': path.join(__dirname, sampleApp1Name, sampleApp1RootClient)
-    },
+//!!!
+var sharedConfig = {
 
-    output: {
-        path: path.join(__dirname, dist),
-        filename: '[name].js',
-    },
+    //!!!
+    resolve: { extensions: ['.ts', '.js'] },
 
-    resolve: {
-        extensions: ['.ts', '.js']
-    },
-
+    //!!!
     module: {
         loaders: [
             {
@@ -40,6 +34,24 @@ var clientBundleConfig = {
         ]
     },
 
+    //!!!
+    devtool: 'inline-source-map',
+};
+
+var clientBundleConfig = merge(sharedConfig, {
+
+    //!!!
+    entry: { 
+        'sample-app1-client': path.join(__dirname, sampleApp1Name, sampleApp1RootClient)
+    },
+
+    //!!!
+    output: {
+        path: path.join(__dirname, dist),
+        filename: '[name].js',
+    },
+
+    //!!!
     plugins: [
         new webpack.DllReferencePlugin({
             context: __dirname,
@@ -47,13 +59,17 @@ var clientBundleConfig = {
         }),
     ],
 
-    devtool: 'inline-source-map',
-};
+    
+});
 
-var serverBundleConfig = {
+var serverBundleConfig = merge(sharedConfig, {
+
+    //!!!
     entry: {
         'sample-app1-server': path.join(__dirname, sampleApp1Name, sampleApp1RootServer)
     },
+
+    //!!!
     output: {
         //!!!
         libraryTarget: 'commonjs',
@@ -61,26 +77,11 @@ var serverBundleConfig = {
         filename: '[name].js',
     },
 
-    resolve: {
-        extensions: ['.ts', '.js']
-    },
-
-    module: {
-        loaders: [
-            {
-                loader: 'ts-loader',
-                exclude: /node_modules/,
-            }
-        ]
-    },
-
     //!!!
     target: 'node',
 
-    devtool: 'inline-source-map',
-
     //!!!
     externals: [nodeExternals()]
-};
+});
 
 module.exports = [clientBundleConfig, serverBundleConfig];
