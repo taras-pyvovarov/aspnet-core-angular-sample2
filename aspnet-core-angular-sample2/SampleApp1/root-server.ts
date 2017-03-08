@@ -29,9 +29,8 @@ export default createServerRenderer(params => {
                 //!!!
                 preboot: false,
 
-                // TODO: Render just the <app> component instead of wrapping it inside an extra HTML document
-                // Waiting on https://github.com/angular/universal/issues/347
-                document: '<!DOCTYPE html><html><head></head><body><sample-app1></sample-app1></body></html>'
+                //!!!
+                document: '<sample-app1></sample-app1>'
             },
 
             //!!!

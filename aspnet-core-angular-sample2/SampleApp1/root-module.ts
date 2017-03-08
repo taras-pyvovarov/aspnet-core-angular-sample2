@@ -5,19 +5,29 @@ import { NgModule } from '@angular/core';
 import { UniversalModule } from 'angular2-universal';
 import { RouterModule } from '@angular/router';
 
+//App components.
 import { AppComponent } from './components/root-component/root-component';
+import { HomeComponent } from './components/home-component/home-component';
 
 //Decorator function. Properties contain metadata about module.
 @NgModule({
+    //!!!
     bootstrap: [AppComponent],
-    declarations: [AppComponent],
+
+    //!!!
+    declarations: [AppComponent, HomeComponent],
+
     imports: [
-        UniversalModule,// Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
+        //Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
+        UniversalModule,
+
+        //!!!
         RouterModule.forRoot([
-            { path: '', component: AppComponent },
+            { path: '', component: HomeComponent },
+            { path: 'home', component: HomeComponent },
         ])
     ],
 })
 
-//Dow we need this???
+//Declaration of root module.
 export class AppModule { }
