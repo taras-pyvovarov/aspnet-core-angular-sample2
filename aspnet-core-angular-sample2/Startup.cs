@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -45,13 +46,18 @@ namespace aspnet_core_angular_sample2
         /// <param name="loggerFactory"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole();
-
-            if (env.IsDevelopment())
-                app.UseDeveloperExceptionPage();
-
             app.UseStaticFiles();
             app.UseMvc();
+
+            if (env.IsDevelopment())
+            {
+                loggerFactory.AddConsole();
+                app.UseDeveloperExceptionPage();
+                //Use Webpack dev middleware from aspnet core SPA services. It will host webpack live and keep sources up-to-date.
+                //Additionaly Webpack requires aspnet-webpack module to work.
+                //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions { HotModuleReplacement = true });
+                app.UseWebpackDevMiddleware();
+            }
         }
     }
 }

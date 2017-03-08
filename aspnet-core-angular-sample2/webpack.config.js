@@ -26,6 +26,14 @@ var sharedConfig = {
     //!!!
     resolve: { extensions: ['.ts', '.js'] },
 
+    //Output bundle configuration.
+    output: {
+        filename: '[name].js',
+        //Webpack dev middleware, if enabled, handles requests for this URL prefix.
+        //webpack-dev-server will find static assets in 'path' folder, so html can reference 'publicPath' folder.
+        publicPath: '/assets/'
+    },
+
     //!!!
     module: {
         loaders: [
@@ -49,10 +57,9 @@ var clientBundleConfig = merge(sharedConfig, {
         'sample-app1-client': path.join(__dirname, sampleApp1Name, sampleApp1RootClient)
     },
 
-    //!!!
+    //Output bundle configuration.
     output: {
         path: path.join(__dirname, dist),
-        filename: '[name].js',
     },
 
     //!!!
@@ -74,12 +81,11 @@ var serverBundleConfig = merge(sharedConfig, {
         'sample-app1-server': path.join(__dirname, sampleApp1Name, sampleApp1RootServer)
     },
 
-    //!!!
+    //Output bundle configuration.
     output: {
         //!!!
         libraryTarget: 'commonjs',
         path: path.join(__dirname, distServer),
-        filename: '[name].js',
     },
 
     //!!!
