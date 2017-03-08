@@ -18,7 +18,9 @@ const sampleApp1Name = 'SampleApp1';
 const sampleApp1RootClient = 'root-client.ts';
 const sampleApp1RootServer = 'root-server.ts';
 
-//!!!
+//*********Building Angular app with server side rendering*********
+
+//Common configs for server and client bundles.
 var sharedConfig = {
 
     //!!!
@@ -27,10 +29,11 @@ var sharedConfig = {
     //!!!
     module: {
         loaders: [
-            {
-                loader: 'ts-loader',
-                exclude: /node_modules/,
-            }
+            //Use ts loader for typescript. It will compile into bundle. 
+            { test: /\.ts$/, loader: 'ts-loader', exclude: /node_modules/ },
+
+            //Use raw loader for html. It will inject html as a string inside bundle.
+            { test: /\.html$/, loader: 'raw-loader' },
         ]
     },
 
@@ -38,6 +41,7 @@ var sharedConfig = {
     devtool: 'inline-source-map',
 };
 
+//Common configs for client bundle.
 var clientBundleConfig = merge(sharedConfig, {
 
     //!!!
@@ -62,6 +66,7 @@ var clientBundleConfig = merge(sharedConfig, {
     
 });
 
+//Common configs for server bundle.
 var serverBundleConfig = merge(sharedConfig, {
 
     //!!!
@@ -84,4 +89,5 @@ var serverBundleConfig = merge(sharedConfig, {
     externals: [nodeExternals()]
 });
 
+//Exporting bundle configs.
 module.exports = [clientBundleConfig, serverBundleConfig];

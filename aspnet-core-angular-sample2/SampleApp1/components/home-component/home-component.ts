@@ -6,7 +6,7 @@
     selector: 'home',
 
     //!!!
-    template: '<h1>Hello from home component</h1>'
+    template: require('./home-component.html')
 })
 
 //!!!

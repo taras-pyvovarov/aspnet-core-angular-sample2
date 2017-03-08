@@ -35,6 +35,7 @@
     "webpack": "2.2.1",
     "webpack-merge": "4.0.0",
     "webpack-node-externals": "1.5.4",
-    "ts-loader": "2.0.1"
+    "ts-loader": "2.0.1",
+    "raw-loader": "0.5.1"
   }
 }
