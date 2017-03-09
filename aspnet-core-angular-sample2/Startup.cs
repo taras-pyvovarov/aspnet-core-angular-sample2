@@ -23,7 +23,6 @@ namespace aspnet_core_angular_sample2
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .Build();
             host.Run();
         }
@@ -52,6 +51,8 @@ namespace aspnet_core_angular_sample2
             if (env.IsDevelopment())
             {
                 loggerFactory.AddConsole();
+                loggerFactory.AddDebug();
+
                 app.UseDeveloperExceptionPage();
                 //Use Webpack dev middleware from aspnet core SPA services. It will host webpack live and keep sources up-to-date.
                 //Additionaly Webpack requires aspnet-webpack module to work.
