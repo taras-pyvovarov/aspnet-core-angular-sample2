@@ -2,7 +2,8 @@
     @*SampleApp1 is here*@
     <app asp-prerender-module="wwwroot_server/sample-app1-server">Loading...</app>
 
-    @*App should be imported below root decorator declaration*@
-    @*<script src="~/angular.bundle.js"></script>*@
+    @*Importing angular bundle*@
+    <script src="~/angular.bundle.js"></script>
+    @*Importing app, should be imported below root decorator declaration*@
     <script src="~/sample-app1-client.js"></script>
 </div>

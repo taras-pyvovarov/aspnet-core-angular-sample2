@@ -68,6 +68,10 @@ var clientBundleConfig = merge(sharedConfig, {
             context: __dirname,
             manifest: require(path.join(__dirname, dist, 'vendor-manifest.json'))
         }),
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            manifest: require(path.join(__dirname, dist, 'angular-manifest.json'))
+        }),
     ],
 
 

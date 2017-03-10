@@ -21,7 +21,7 @@ var extractBundleCSS = new extractTextPlugin('[name].css');
 module.exports = {
     entry: {
         //List of modules in 'angular' bundle.
-        'vendor': [
+        'angular': [
             '@angular/common',
             '@angular/compiler',
             '@angular/core',
@@ -31,20 +31,15 @@ module.exports = {
             '@angular/router',
             'angular2-universal',
             'angular2-universal-polyfills',
+        ],
 
+        //List of modules in 'vendor' bundle.
+        'vendor': [
             'jquery',
             'tether',
             'bootstrap',
             'bootstrap/dist/css/bootstrap.css',
-            
         ],
-
-        //List of modules in 'vendor' bundle.
-        //'vendor': [
-        //    'bootstrap',
-        //    'bootstrap/dist/css/bootstrap.css',
-        //    'jquery',
-        //],
     },
 
     output: {
