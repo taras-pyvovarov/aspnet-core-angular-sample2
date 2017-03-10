@@ -4,6 +4,11 @@ import { platformUniversalDynamic } from 'angular2-universal';
 
 import { AppModule } from './root-module';
 
+//!!!
+//Without import, bootstrap js logics is not working.
+import 'bootstrap';
+
+//!!!
 // Enable either Hot Module Reloading or production mode
 if (module['hot']) {
     module['hot'].accept();

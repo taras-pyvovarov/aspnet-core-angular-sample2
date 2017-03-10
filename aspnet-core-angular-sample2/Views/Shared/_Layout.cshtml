@@ -1,15 +1,26 @@
-﻿<!DOCTYPE html>
-
+﻿@*Html5 doctype*@
+<!DOCTYPE html>
 <html>
-<head>
-    <meta name="viewport" content="width=device-width" />
 
-    @*!!!Add description here*@
+<head>
+    @*name="viewport" - declare modile-first app for proper rendering and touch zooming*@
+    @*width=device-width - lets take all actual with*@
+    @*initial-scale=1 - keeps zoom when rotating device*@
+    @*shrink-to-fit=no doesn't let content scale down when overflow*@
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    @*Base url for all relative URLs in a document*@
+    @*Angular routing is not working without it*@
     <base href="/" />
+
+    <link rel="stylesheet" href="~/vendor.css" />
+    <script src="~/vendor.bundle.js"></script>
 </head>
+
 <body>
     <div>
         @RenderBody()
     </div>
 </body>
+
 </html>

@@ -53,7 +53,7 @@ var sharedConfig = {
 var clientBundleConfig = merge(sharedConfig, {
 
     //!!!
-    entry: { 
+    entry: {
         'sample-app1-client': path.join(__dirname, sampleApp1Name, sampleApp1RootClient)
     },
 
@@ -66,11 +66,11 @@ var clientBundleConfig = merge(sharedConfig, {
     plugins: [
         new webpack.DllReferencePlugin({
             context: __dirname,
-            manifest: require(path.join(__dirname, dist, 'angular-manifest.json'))
+            manifest: require(path.join(__dirname, dist, 'vendor-manifest.json'))
         }),
     ],
 
-    
+
 });
 
 //Common configs for server bundle.
