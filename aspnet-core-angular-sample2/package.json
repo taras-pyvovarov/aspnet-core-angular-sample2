@@ -31,7 +31,8 @@
 
     "jquery": "3.1.1",
     "tether": "1.4.0",
-    "bootstrap": "4.0.0-alpha.6"
+    "bootstrap": "4.0.0-alpha.6",
+    "font-awesome": "4.7.0"
   },
 
   "devDependencies": {
@@ -44,7 +45,8 @@
     "extract-text-webpack-plugin": "2.1.0",
     "ts-loader": "2.0.1",
     "raw-loader": "0.5.1",
-    "style-loader": "0.13.2",
-    "css-loader": "0.27.1"
+    "css-loader": "0.27.1",
+    "url-loader": "0.5.8",
+    "file-loader": "0.10.1"
   }
 }

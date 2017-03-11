@@ -30,8 +30,9 @@ var sharedConfig = {
     output: {
         filename: '[name].js',
         //Webpack dev middleware, if enabled, handles requests for this URL prefix.
-        //webpack-dev-server will find static assets in 'path' folder, so html can reference 'publicPath' folder.
-        publicPath: '/assets/'
+        //webpack-dev-server will find static assets in dist folder when they are referenced with 'publicPath' prefix.
+        //Needed for code splitting, url/file-loader, etc.
+        publicPath: '/'
     },
 
     //!!!

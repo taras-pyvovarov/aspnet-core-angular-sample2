@@ -18,7 +18,7 @@ var dist = 'wwwroot';
 //Creating instance of extract text plugin for vendor bundle
 var extractBundleCSS = new extractTextPlugin('[name].css');
 
-module.exports = {
+var vendorBundlesConfig = {
     entry: {
         //List of modules in 'angular' bundle.
         'angular': [
@@ -39,6 +39,7 @@ module.exports = {
             'tether',
             'bootstrap',
             'bootstrap/dist/css/bootstrap.css',
+            'font-awesome/css/font-awesome.css'
         ],
     },
 
@@ -53,8 +54,15 @@ module.exports = {
 
     module: {
         loaders: [
-            //!!!
-            { test: /\.css$/, loader: extractBundleCSS.extract({ fallback: 'style-loader', use: 'css-loader' }) },
+            //Use css-loader for building css for bundle. 
+            { test: /\.css$/, loader: extractBundleCSS.extract({ use: 'css-loader' }) },
+
+            //Use url-loader for small files. They will be provided as data url inside main assets (css, js). 
+            //No dedicated file is needed. Limit in bytes. Files not handled by url-loader will be handled by file-loader here automatically.
+            //These items end up as dedicated files in target folder. file-loader should be installed. url-loader and file-loader can conflict when both called explicitly.
+            //Problem description and alternative solution:
+            //http://stackoverflow.com/questions/34133808/webpack-ots-parsing-error-loading-fonts
+            { test: /\.(png|woff|woff2|eot|ttf|svg|jpg|gif)(\?|$)/, loader: 'url-loader', query: { limit: 100000 } },
         ]
     },
 
@@ -73,4 +81,6 @@ module.exports = {
             name: '[name]_[hash]'
         }),
     ],
-}
+};
+
+module.exports = [vendorBundlesConfig];
