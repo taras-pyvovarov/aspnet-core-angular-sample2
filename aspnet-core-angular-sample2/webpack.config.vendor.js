@@ -10,7 +10,9 @@ var webpack = require('webpack');
 var extractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 
-//App hardcodes.
+//*********Global variables and hardcodes*********
+//It is dev build if '-p' passed as cmd parameter.
+var isDevBuild = process.argv.indexOf('-p') < 0;
 var dist = 'wwwroot';
 
 //*********Building 3-rd party libraries and assets*********

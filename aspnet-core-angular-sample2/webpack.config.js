@@ -11,7 +11,9 @@ var merge = require('webpack-merge');
 var nodeExternals = require('webpack-node-externals');
 var path = require('path');
 
-//App hardcodes.
+//*********Global variables and hardcodes*********
+//It is dev build if '-p' passed as cmd parameter.
+var isDevBuild = process.argv.indexOf('-p') < 0;
 const dist = 'wwwroot';
 const distServer = 'wwwroot_server';
 const sampleApp1Name = 'SampleApp1';
@@ -46,8 +48,19 @@ var sharedConfig = {
         ]
     },
 
-    //!!!
-    devtool: 'inline-source-map',
+    //This option controls if and how Source Maps are generated.
+    //inline-source-map - A SourceMap is added as a DataUrl to the bundle.
+    devtool: isDevBuild ? 'inline-source-map' : 'false',
+
+    //Common plugins for server and client bundles.
+    plugins: [
+        //List of plugins here.
+    ].concat(isDevBuild ? [] : [
+        //Additionally plugins that apply in production builds only
+
+        //Run js uglification, additionally remove js comments.
+        new webpack.optimize.UglifyJsPlugin({ comments: false }),
+    ])
 };
 
 //Common configs for client bundle.
@@ -63,7 +76,7 @@ var clientBundleConfig = merge(sharedConfig, {
         path: path.join(__dirname, dist),
     },
 
-    //!!!
+    //Plugins for client bundle.
     plugins: [
         new webpack.DllReferencePlugin({
             context: __dirname,
@@ -74,8 +87,6 @@ var clientBundleConfig = merge(sharedConfig, {
             manifest: require(path.join(__dirname, dist, 'angular-manifest.json'))
         }),
     ],
-
-
 });
 
 //Common configs for server bundle.
