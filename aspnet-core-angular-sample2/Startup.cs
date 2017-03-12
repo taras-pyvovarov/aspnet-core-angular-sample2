@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using aspnet_core_angular_sample2.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -45,9 +46,6 @@ namespace aspnet_core_angular_sample2
         /// <param name="loggerFactory"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseStaticFiles();
-            app.UseMvc();
-
             if (env.IsDevelopment())
             {
                 loggerFactory.AddConsole();
@@ -59,6 +57,14 @@ namespace aspnet_core_angular_sample2
                 //Additionaly Webpack requires webpack-hot-middleware for hot module replacement to work.
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions { HotModuleReplacement = true });
             }
+            else
+            {
+                //Should be addded before UseMvc(), otherwise not working in .netcore1.1
+                app.UseExceptionHandler($"/{nameof(HomeController.Error)}");
+            }
+
+            app.UseStaticFiles();
+            app.UseMvc();
         }
     }
 }
