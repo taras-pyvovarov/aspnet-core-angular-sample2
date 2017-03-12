@@ -4,7 +4,7 @@
     //!!!
     "target": "es5",
 
-    //!!!
+    //Module resolution strategy. Should be always 'node' for new typescript.
     "moduleResolution": "node",
 
     //!!!
