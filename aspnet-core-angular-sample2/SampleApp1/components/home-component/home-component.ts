@@ -6,7 +6,7 @@
     selector: 'home',
 
     //!!!
-    template: require('./home-component.html')
+    template: require('./home-component.html'),
 })
 
 //!!!

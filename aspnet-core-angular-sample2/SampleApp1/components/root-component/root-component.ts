@@ -6,7 +6,7 @@
     selector: 'sample-app1',
 
     //!!!
-    template: `<router-outlet></router-outlet>`
+    template: require('./root-component.html'),
 })
 
 

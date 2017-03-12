@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 
 //App components.
 import { AppComponent } from './components/root-component/root-component';
+import { TopMenuComponent } from './components/top-menu-component/top-menu-component';
 import { HomeComponent } from './components/home-component/home-component';
 
 //Decorator function. Properties contain metadata about module.
@@ -14,8 +15,8 @@ import { HomeComponent } from './components/home-component/home-component';
     //!!!
     bootstrap: [AppComponent],
 
-    //!!!
-    declarations: [AppComponent, HomeComponent],
+    //Declaration of all used components.
+    declarations: [AppComponent, TopMenuComponent, HomeComponent],
 
     imports: [
         //Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
