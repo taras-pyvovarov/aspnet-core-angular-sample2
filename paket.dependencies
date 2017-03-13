@@ -1,6 +1,0 @@
-//Nuget packages source
-//source https://nuget.org/api/v2
-source https://api.nuget.org/v3/index.json
-
-//NuGet packages
-nuget FAKE ~> 4.55.0
