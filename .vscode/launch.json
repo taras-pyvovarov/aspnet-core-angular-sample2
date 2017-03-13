@@ -6,9 +6,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/bin/Debug/netcoreapp1.1/aspnet-core-angular-sample2.dll",
+            "program": "${workspaceRoot}/src/aspnet-core-angular-sample2/bin/Debug/netcoreapp1.1/aspnet-core-angular-sample2.dll",
             "args": [],
-            "cwd": "${workspaceRoot}",
+            "cwd": "${workspaceRoot}/src/aspnet-core-angular-sample2",
             "stopAtEntry": false,
             "launchBrowser": {
                 "enabled": true,
@@ -28,7 +28,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceRoot}/Views"
+                "/Views": "${workspaceRoot}/src/aspnet-core-angular-sample2/Views"
             }
         },
         {
