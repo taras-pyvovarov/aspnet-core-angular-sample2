@@ -8,6 +8,8 @@ ECHO Running build bootstrapper
 ECHO Checking build outdated packages
 .\.paket\paket.exe outdated
 
+::Paket - alrernative NuGet client to nuget cli.
+::http://fsprojects.github.io/Paket/index.html
 ECHO Installing build packages
 .\.paket\paket.exe install
 if errorlevel 1 (
