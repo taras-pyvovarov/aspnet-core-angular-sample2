@@ -1,4 +1,5 @@
 #r "./packages/fake/tools/FakeLib.dll" 
+open System.IO
 open Fake
 
 //Working with FileSystemHelper:
@@ -13,7 +14,9 @@ let buildHeaderText = """
 """
 
 let currentDir = FileSystemHelper.currentDirectory
-let dotnetPublishDir = currentDir @@ @"\..\buildArtifact"
+let projectRootDir = Directory.GetParent(currentDir).FullName;
+let dotnetPublishDir = projectRootDir @@ @"buildArtifact"
+
 
 let dotnetVersion = DotNetCli.getVersion ()
 
@@ -29,6 +32,7 @@ let dotnetPublish = (fun () ->
         Configuration = "Release";
         Project = @"..\src\aspnet-core-angular-sample2\aspnet-core-angular-sample2.csproj";
         //dotnet CLI publish interprets relative path with project folder as a starting point
+        //MacOS doest allow '..' navigation inside path
         //Output = @"..\..\buildArtifact";
         Output = dotnetPublishDir;
     })
@@ -38,6 +42,7 @@ let dotnetPublish = (fun () ->
 Target "ShowInitMessage" (fun _ ->
     printfn "%s" buildHeaderText
     printfn "dotnet CLI version: %s" dotnetVersion
+    printfn "root directory: %s" projectRootDir
     printfn "current directory: %s" currentDir
 )
 
