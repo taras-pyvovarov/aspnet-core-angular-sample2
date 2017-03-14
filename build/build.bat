@@ -3,13 +3,18 @@
 ::Clearing console output:
 ::cls
 
-ECHO Running build batch bootstrapper file
+ECHO Running build bootstrapper
 
-ECHO Installing required nuget packages
+ECHO Checking build outdated packages
+.\.paket\paket.exe outdated
+
+ECHO Installing build packages
 .\.paket\paket.exe install
 if errorlevel 1 (
+  ::Do not continue if packages are not restored
   exit /b %errorlevel%
 )
 
-ECHO Running build
-".\packages\FAKE\tools\Fake.exe" .\build.fsx
+ECHO Running FAKE build
+".\packages\FAKE\tools\Fake.exe" ".\build.fsx"
+exit /b %errorlevel%
