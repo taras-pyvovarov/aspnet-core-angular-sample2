@@ -64,7 +64,20 @@ namespace aspnet_core_angular_sample2
             }
 
             app.UseStaticFiles();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                //Default aspnet routing.
+                //!!!Investigate using attributes.
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+
+                //SPA fallback. Will return 404 on not found pages, 
+                //but has restriction on using '.' in last sections of url.
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
+            });
         }
     }
 }
