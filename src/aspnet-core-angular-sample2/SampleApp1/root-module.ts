@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './components/root-component/root-component';
 import { TopMenuComponent } from './components/top-menu-component/top-menu-component';
 import { HomeComponent } from './components/home-component/home-component';
+import { CalculatorComponent } from './components/calculator-component/calculator-component';
 
 //Decorator function. Properties contain metadata about module.
 @NgModule({
@@ -16,7 +17,12 @@ import { HomeComponent } from './components/home-component/home-component';
     bootstrap: [AppComponent],
 
     //Declaration of all used components.
-    declarations: [AppComponent, TopMenuComponent, HomeComponent],
+    declarations: [
+        AppComponent, 
+        TopMenuComponent, 
+        HomeComponent, 
+        CalculatorComponent,
+    ],
 
     imports: [
         //Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
@@ -26,6 +32,7 @@ import { HomeComponent } from './components/home-component/home-component';
         RouterModule.forRoot([
             { path: '', component: HomeComponent },
             { path: 'home', component: HomeComponent },
+            { path: 'calc', component: CalculatorComponent },
         ])
     ],
 })
