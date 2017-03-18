@@ -5,16 +5,21 @@ import { Component } from '@angular/core';
     template: require('./calculator-component.html'),
 })
 
-export class CalculatorComponent 
+export class CalculatorComponent
 {
     var1: string = 'Simplest Angular2 binding';
+    generatedNumber: number;
 
-    func1()
-    {
+    func1() {
         let a1: string = 'Hello';
         let a2: string = 'from';
         let a3: string = 'function';
 
         return `${a1} ${a2} ${a3}!`;
+    };
+
+    generateNumber() {
+        let tempNum: number = Math.random();
+        this.generatedNumber = tempNum;
     }
 }

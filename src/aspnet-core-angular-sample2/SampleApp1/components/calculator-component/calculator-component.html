@@ -2,6 +2,13 @@
 
 <!--Simplest NG binding-->
 <div>{{var1}}</div>
+<hr />
 
 <!--Function NG binding-->
 <div>{{func1()}}</div>
+<hr />
+
+<!--Generating nums-->
+<button (click)="generateNumber()">Generate number</button>
+<div>Generated Number: {{generatedNumber}}</div>
+<hr />
