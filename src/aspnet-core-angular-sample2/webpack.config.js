@@ -46,8 +46,8 @@ var sharedConfig = {
             //Use raw loader for html. It will inject html as a string inside bundle.
             { test: /\.html$/, loader: 'raw-loader' },
 
-            //Use sass loader first to compile it, then raw loader to inject css into html.
-            { test: /\.css$/, loaders: ['to-string-loader', 'css-loader'] },
+            //Use sass loader first to compile it, then css loader to handle css, to-string loader to inject css into html.
+            { test: /\.scss$/, loaders: ['to-string-loader', 'css-loader', 'sass-loader'] },
         ]
     },
 

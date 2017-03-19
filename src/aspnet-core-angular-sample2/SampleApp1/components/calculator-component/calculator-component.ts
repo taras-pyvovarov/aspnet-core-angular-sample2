@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'calculator',
     template: require('./calculator-component.html'),
-    styles: [require('./calculator-component.css')],
+    styles: [require('./calculator-component.scss')],
 })
 
 export class CalculatorComponent
