@@ -261,5 +261,6 @@ paket-files/
 __pycache__/
 *.pyc
 
-# Project build artifact folder
-buildArtifact
+# Project build artifact folder(s)
+publisharchive
+publishfiles

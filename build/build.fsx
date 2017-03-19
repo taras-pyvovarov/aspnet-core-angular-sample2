@@ -22,7 +22,7 @@ let buildHeaderText = """
 
 let currentDir = FileSystemHelper.currentDirectory
 let solutionRootDir = Directory.GetParent(currentDir).FullName;
-let entryProjectRootDir = solutionRootDir @@ @"src/aspnet-core-angular-sample2";
+let entryProjectRootDir = solutionRootDir @@ "src" @@ "aspnet-core-angular-sample2";
 let entryProjectNodeModules = entryProjectRootDir @@ "node_modules";
 let publishDir = solutionRootDir @@ "publishfiles"
 let publishDirRelative = ".." @@ "publishfiles"
@@ -40,13 +40,13 @@ let dotnetPublish = (fun () ->
     DotNetCli.Restore (fun p -> 
     { p with 
         NoCache = true;
-        Project = entryProjectRootDir @@ @"aspnet-core-angular-sample2.csproj";
+        Project = entryProjectRootDir @@ "aspnet-core-angular-sample2.csproj";
     })
 
     DotNetCli.Publish (fun p -> 
     { p with 
         Configuration = "Release";
-        Project = entryProjectRootDir @@ @"aspnet-core-angular-sample2.csproj";
+        Project = entryProjectRootDir @@ "aspnet-core-angular-sample2.csproj";
         //dotnet CLI publish interprets relative path with project folder as a starting point
         //MacOS doest allow '..' navigation inside path
         //Output = @"..\..\buildArtifact";
@@ -78,7 +78,7 @@ let copyNodeModules = (fun () ->
 let zipBuildFiles = (fun () ->
     //In MacOS only relative path is accepted. Absolute is refered as relative.
     !! (publishDirRelative @@ "**" @@ "*.*") 
-        |> Zip publishDirRelative (solutionRootDir @@ @"publisharchive" @@ "appBuild.zip")
+        |> Zip publishDirRelative (solutionRootDir @@ "publisharchive" @@ "appBuild.zip")
 )
 
 
