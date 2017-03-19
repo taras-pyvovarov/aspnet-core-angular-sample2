@@ -47,7 +47,7 @@ var sharedConfig = {
             { test: /\.html$/, loader: 'raw-loader' },
 
             //Use sass loader first to compile it, then raw loader to inject css into html.
-            { test: /\.scss$/, exclude: /node_modules/, loaders: ['raw-loader', 'sass-loader'] }
+            { test: /\.css$/, loaders: ['to-string-loader', 'css-loader'] },
         ]
     },
 
