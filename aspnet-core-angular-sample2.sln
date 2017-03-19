@@ -13,6 +13,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".git", ".git", "{E3D2C17A-A
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AzureRGSample2", "src\AzureRGSample2\AzureRGSample2.deployproj", "{A5DBF430-1507-46AB-A9F0-60B0F9A18FBB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{64D9CBA6-1911-4BA8-A4F4-00AE1B4DACC2}"
+	ProjectSection(SolutionItems) = preProject
+		build\build.bat = build\build.bat
+		build\build.fsx = build\build.fsx
+		build\paket.dependencies = build\paket.dependencies
+		build\paket.lock = build\paket.lock
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -3,6 +3,8 @@ open System.IO
 open Fake
 open Fake.NpmHelper
 
+//Working with EnvironmentHelper:
+//http://fsharp.github.io/FAKE/apidocs/fake-environmenthelper.html
 //Working with FileSystemHelper:
 //http://fsharp.github.io/FAKE/apidocs/fake-filesystemhelper.html
 //Working with DotNetCli:
@@ -19,7 +21,7 @@ let buildHeaderText = """
 ********************FAKE BUILD SAMPLE********************
 ---------------------------------------------------------
 """
-
+let isWindows = EnvironmentHelper.isWindows
 let currentDir = FileSystemHelper.currentDirectory
 let solutionRootDir = Directory.GetParent(currentDir).FullName;
 let entryProjectRootDir = solutionRootDir @@ "src" @@ "aspnet-core-angular-sample2";
@@ -29,8 +31,8 @@ let publishDirRelative = ".." @@ "publishfiles"
 
 //All webpack arguments in the order as they are executed.
 let webpackArgs = [| 
-    "--config webpack.config.vendor.js";
-    "--config webpack.config.js"
+    "-p --config webpack.config.vendor.js";
+    "-p --config webpack.config.js"
 |]
 
 
@@ -63,12 +65,13 @@ let npmInstall = (fun () ->
 )
 
 let webpackBuild = (fun () ->
-    let command = entryProjectNodeModules @@ ".bin" @@ "webpack"
+    let command = entryProjectNodeModules @@ ".bin" @@ if isWindows then "webpack.cmd" else "webpack"
 
     //Run webpack with specific args in project root as working dir.
     for args in webpackArgs do
         printfn "Command: %s %s" command args
-        let result = Shell.Exec(command, args, entryProjectRootDir)
+        let exitCode = Shell.Exec(command, args, entryProjectRootDir)
+        printfn "Exit code: %i" exitCode
 )
 
 let copyNodeModules = (fun () ->
