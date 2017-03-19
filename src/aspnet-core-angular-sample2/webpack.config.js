@@ -45,6 +45,9 @@ var sharedConfig = {
 
             //Use raw loader for html. It will inject html as a string inside bundle.
             { test: /\.html$/, loader: 'raw-loader' },
+
+            //Use sass loader first to compile it, then raw loader to inject css into html.
+            { test: /\.scss$/, exclude: /node_modules/, loaders: ['raw-loader', 'sass-loader'] }
         ]
     },
 
@@ -109,6 +112,7 @@ var serverBundleConfig = merge(sharedConfig, {
 
     //!!!
     externals: [nodeExternals()]
+    //externals: /^[^.]/,
 });
 
 //Exporting bundle configs.
