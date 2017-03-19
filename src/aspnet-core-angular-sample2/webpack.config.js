@@ -112,7 +112,6 @@ var serverBundleConfig = merge(sharedConfig, {
 
     //!!!
     externals: [nodeExternals()]
-    //externals: /^[^.]/,
 });
 
 //Exporting bundle configs.
