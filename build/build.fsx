@@ -22,8 +22,9 @@ let buildHeaderText = """
 
 let currentDir = FileSystemHelper.currentDirectory
 let solutionRootDir = Directory.GetParent(currentDir).FullName;
-let entryProjectRootDir = solutionRootDir @@ @"src\aspnet-core-angular-sample2";
+let entryProjectRootDir = solutionRootDir @@ @"src/aspnet-core-angular-sample2";
 let publishDir = solutionRootDir @@ @"publishfiles"
+let publishDirRelative = ".." @@ @"publishfiles"
 
 
 let dotnetVersion = DotNetCli.getVersion ()
@@ -56,14 +57,14 @@ let npmInstall = (fun () ->
 
 let webpackBuild = (fun () ->
     //Running vendor webpack flow.
-    let command = entryProjectRootDir @@ @"node_modules\.bin\webpack.cmd"
+    let command = entryProjectRootDir @@ "node_modules" @@ ".bin" @@ "webpack"
     let args = @"--config webpack.config.vendor.js"
     let workingDir = entryProjectRootDir
     //printfn "Command: %s %s" command args
     let result = Shell.Exec(command, args, workingDir)
 
     //Running app webpack flow.
-    let command = entryProjectRootDir @@ @"node_modules\.bin\webpack.cmd"
+    let command = entryProjectRootDir @@ "node_modules" @@ ".bin" @@ "webpack"
     let args = @"--config webpack.config.js"
     let workingDir = entryProjectRootDir
     //printfn "Command: %s %s" command args
@@ -75,8 +76,9 @@ let copyNodeModules = (fun () ->
 )
 
 let zipBuildFiles = (fun () ->
-    !! (publishDir @@ "**" @@ "*.*") 
-        |> Zip publishDir (solutionRootDir @@ @"publisharchive\appBuild.zip")
+    //In MacOS only relative path is accepted. Absolute is refered as relative.
+    !! (publishDirRelative @@ "**" @@ "*.*") 
+        |> Zip publishDirRelative (solutionRootDir @@ @"publisharchive" @@ "appBuild.zip")
 )
 
 
