@@ -23,8 +23,15 @@ let buildHeaderText = """
 let currentDir = FileSystemHelper.currentDirectory
 let solutionRootDir = Directory.GetParent(currentDir).FullName;
 let entryProjectRootDir = solutionRootDir @@ @"src/aspnet-core-angular-sample2";
-let publishDir = solutionRootDir @@ @"publishfiles"
-let publishDirRelative = ".." @@ @"publishfiles"
+let entryProjectNodeModules = entryProjectRootDir @@ "node_modules";
+let publishDir = solutionRootDir @@ "publishfiles"
+let publishDirRelative = ".." @@ "publishfiles"
+
+//All webpack arguments in the order as they are executed.
+let webpackArgs = [| 
+    "--config webpack.config.vendor.js";
+    "--config webpack.config.js"
+|]
 
 
 let dotnetVersion = DotNetCli.getVersion ()
@@ -56,23 +63,16 @@ let npmInstall = (fun () ->
 )
 
 let webpackBuild = (fun () ->
-    //Running vendor webpack flow.
-    let command = entryProjectRootDir @@ "node_modules" @@ ".bin" @@ "webpack"
-    let args = @"--config webpack.config.vendor.js"
-    let workingDir = entryProjectRootDir
-    //printfn "Command: %s %s" command args
-    let result = Shell.Exec(command, args, workingDir)
+    let command = entryProjectNodeModules @@ ".bin" @@ "webpack"
 
-    //Running app webpack flow.
-    let command = entryProjectRootDir @@ "node_modules" @@ ".bin" @@ "webpack"
-    let args = @"--config webpack.config.js"
-    let workingDir = entryProjectRootDir
-    //printfn "Command: %s %s" command args
-    let result = Shell.Exec(command, args, workingDir)
+    //Run webpack with specific args in project root as working dir.
+    for args in webpackArgs do
+        printfn "Command: %s %s" command args
+        let result = Shell.Exec(command, args, entryProjectRootDir)
 )
 
 let copyNodeModules = (fun () ->
-    FileHelper.CopyDir (publishDir @@ @"node_modules") (entryProjectRootDir @@ @"node_modules") allFiles
+    FileHelper.CopyDir (publishDir @@ "node_modules") entryProjectNodeModules allFiles
 )
 
 let zipBuildFiles = (fun () ->
