@@ -31,6 +31,7 @@ let solutionRootDir = Directory.GetParent(currentDir).FullName;
 let entryProjectRootDir = solutionRootDir @@ "src" @@ "aspnet-core-angular-sample2";
 let entryProjectNodeModules = entryProjectRootDir @@ "node_modules";
 let publishDir = solutionRootDir @@ "publishfiles"
+let publishArchiveDir = solutionRootDir @@ "publisharchive"
 let publishDirRelative = ".." @@ "publishfiles"
 //All webpack arguments in the order as they are executed.
 let webpackArgs = [| 
@@ -41,6 +42,8 @@ let dotnetVersion = DotNetCli.getVersion ()
 
 
 //******Build logic******
+
+//Makes publish of entry project. It will build entire dotnet app.
 let dotnetPublish = (fun () ->
     DotNetCli.Restore (fun p -> 
     { p with 
@@ -50,7 +53,7 @@ let dotnetPublish = (fun () ->
 
     DotNetCli.Publish (fun p -> 
     { p with 
-        Configuration = "Release";
+        Configuration = if isDebug then "Debug" else "Release";
         Project = entryProjectRootDir @@ "aspnet-core-angular-sample2.csproj";
         //dotnet CLI publish interprets relative path with project folder as a starting point
         //MacOS doest allow '..' navigation inside path
@@ -59,6 +62,7 @@ let dotnetPublish = (fun () ->
     })
 )
 
+//Installs npm packets for entry project.
 let npmInstall = (fun () ->
     NpmHelper.Npm (fun p ->
     { p with
@@ -67,6 +71,7 @@ let npmInstall = (fun () ->
     })
 )
 
+//Builds frontent for entry project.
 let webpackBuild = (fun () ->
     let command = entryProjectNodeModules @@ ".bin" @@ if isWindows then "webpack.cmd" else "webpack"
 
@@ -81,10 +86,11 @@ let copyNodeModules = (fun () ->
     FileHelper.CopyDir (publishDir @@ "node_modules") entryProjectNodeModules allFiles
 )
 
+//Zips build output into an archive.
 let zipBuildFiles = (fun () ->
     //In MacOS only relative path is accepted. Absolute is refered as relative.
     !! (publishDirRelative @@ "**" @@ "*.*") 
-        |> ZipHelper.Zip publishDirRelative (solutionRootDir @@ "publisharchive" @@ "appBuild.zip")
+        |> ZipHelper.Zip publishDirRelative (publishArchiveDir @@ "appBuild.zip")
 )
 
 
