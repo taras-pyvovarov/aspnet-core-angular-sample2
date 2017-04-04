@@ -1,3 +1,5 @@
+//******Build entry point******
+
 #r "./packages/fake/tools/FakeLib.dll" 
 open System.IO
 open Fake
@@ -16,11 +18,13 @@ open Fake.NpmHelper
 //Working with ZipHelper:
 //http://fsharp.github.io/FAKE/apidocs/fake-ziphelper.html
 
-let buildHeaderText = """
----------------------------------------------------------
-********************FAKE BUILD SAMPLE********************
----------------------------------------------------------
-"""
+
+
+//******Build params******
+let buildType = EnvironmentHelper.getBuildParamOrDefault "buildType" "Release"
+
+//******Initial & calculated properties******
+let isDebug = if buildType = "Debug" then true else false
 let isWindows = EnvironmentHelper.isWindows
 let currentDir = FileSystemHelper.currentDirectory
 let solutionRootDir = Directory.GetParent(currentDir).FullName;
@@ -28,16 +32,15 @@ let entryProjectRootDir = solutionRootDir @@ "src" @@ "aspnet-core-angular-sampl
 let entryProjectNodeModules = entryProjectRootDir @@ "node_modules";
 let publishDir = solutionRootDir @@ "publishfiles"
 let publishDirRelative = ".." @@ "publishfiles"
-
 //All webpack arguments in the order as they are executed.
 let webpackArgs = [| 
-    "-p --config webpack.config.vendor.js";
-    "-p --config webpack.config.js"
+    (if isDebug then "" else "-p ") + "--config webpack.config.vendor.js"
+    (if isDebug then "" else "-p ") + "--config webpack.config.js"
 |]
-
-
 let dotnetVersion = DotNetCli.getVersion ()
 
+
+//******Build logic******
 let dotnetPublish = (fun () ->
     DotNetCli.Restore (fun p -> 
     { p with 
@@ -57,7 +60,7 @@ let dotnetPublish = (fun () ->
 )
 
 let npmInstall = (fun () ->
-    Npm (fun p ->
+    NpmHelper.Npm (fun p ->
     { p with
         Command = Install Standard
         WorkingDirectory = entryProjectRootDir
@@ -81,13 +84,18 @@ let copyNodeModules = (fun () ->
 let zipBuildFiles = (fun () ->
     //In MacOS only relative path is accepted. Absolute is refered as relative.
     !! (publishDirRelative @@ "**" @@ "*.*") 
-        |> Zip publishDirRelative (solutionRootDir @@ "publisharchive" @@ "appBuild.zip")
+        |> ZipHelper.Zip publishDirRelative (solutionRootDir @@ "publisharchive" @@ "appBuild.zip")
 )
 
 
 //Welcome text, build init messages
-Target "ShowInitMessage" (fun _ ->
-    printfn "%s" buildHeaderText
+Target "BuildInitMessage" (fun _ ->
+    printfn "******Running FAKE build******"
+
+    printfn ">Input params"
+    printfn "Build type: %s" buildType
+
+    printfn ">Environment settings"
     printfn "Dotnet CLI version: %s" dotnetVersion
     printfn "Solution root directory: %s" solutionRootDir
     printfn "Entry project root directory: %s" entryProjectRootDir
@@ -115,7 +123,7 @@ Target "ZipBuildFiles" (fun _ ->
 )
 
 
-"ShowInitMessage"
+"BuildInitMessage"
 ==> "NpmInstall"
 ==> "WebpackBuild"
 ==> "Build"
