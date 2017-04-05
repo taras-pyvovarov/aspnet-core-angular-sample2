@@ -13,11 +13,12 @@ open BuildGeneric
 //http://fsharp.github.io/FAKE/apidocs/fake-filesystemhelper.html
 //Working with DotNetCli:
 //http://fsharp.github.io/FAKE/apidocs/fake-dotnetcli.html
+//Working with NpmHelper:
+//http://fsharp.github.io/FAKE/apidocs/fake-npmhelper.html
 //Working with FileHelper:
 //http://fsharp.github.io/FAKE/apidocs/fake-filehelper.html
 //Working with ZipHelper:
 //http://fsharp.github.io/FAKE/apidocs/fake-ziphelper.html
-
 
 
 //******Build params******
@@ -25,11 +26,9 @@ let buildType = EnvironmentHelper.getBuildParamOrDefault "buildType" "Release"
 
 //******Initial & calculated properties******
 let isDebug = if buildType = "Debug" then true else false
-let isWindows = EnvironmentHelper.isWindows
 let currentDir = FileSystemHelper.currentDirectory
 let solutionRootDir = Directory.GetParent(currentDir).FullName;
 let entryProjectRootDir = solutionRootDir @@ "src" @@ "aspnet-core-angular-sample2";
-let entryProjectNodeModules = entryProjectRootDir @@ "node_modules";
 let entryProjectCsproj = entryProjectRootDir @@ "aspnet-core-angular-sample2.csproj";
 let publishDir = solutionRootDir @@ "publishfiles"
 let publishDirRelative = ".." @@ "publishfiles"
@@ -44,19 +43,8 @@ let dotnetVersion = DotNetCli.getVersion ()
 
 //******Build logic******
 
-//Builds frontent for entry project.
-let webpackBuild = (fun () ->
-    let command = entryProjectNodeModules @@ ".bin" @@ if isWindows then "webpack.cmd" else "webpack"
-
-    //Run webpack with specific args in project root as working dir.
-    for args in webpackArgs do
-        printfn "Command: %s %s" command args
-        let exitCode = Shell.Exec(command, args, entryProjectRootDir)
-        printfn "Exit code: %i" exitCode
-)
-
 let copyNodeModules = (fun () ->
-    FileHelper.CopyDir (publishDir @@ "node_modules") entryProjectNodeModules allFiles
+    FileHelper.CopyDir (publishDir @@ "node_modules") (entryProjectRootDir @@ "node_modules") allFiles
 )
 
 //Zips build output into an archive.
@@ -88,11 +76,13 @@ Target "NpmInstall" (fun _ ->
 )
 
 Target "WebpackBuild" (fun _ ->
-    webpackBuild()
+    //Running webpack for entry project
+    webpackBuild(entryProjectRootDir, webpackArgs)
 )
 
 //Builds all dotnet projects needed
 Target "Build" (fun _ ->
+    //Building entry project
     dotnetPublish(isDebug, entryProjectCsproj, publishDir)
 )
 

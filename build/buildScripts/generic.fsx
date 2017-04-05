@@ -4,10 +4,7 @@ module BuildGeneric
 open Fake
 open Fake.NpmHelper
 
-//Working with NpmHelper:
-//http://fsharp.github.io/FAKE/apidocs/fake-npmhelper.html
-
-//Installs npm packets for working dir that supposed to store package.json
+//Installs npm packets for working dir that supposed to store package.json.
 let npmInstall = (fun (workingDir) ->
     NpmHelper.Npm (fun p ->
     { p with
@@ -33,4 +30,16 @@ let dotnetPublish = (fun (isDebug, csprojFile, publishDir) ->
         //Output = @"..\..\buildArtifact";
         Output = publishDir;
     })
+)
+
+//Runs webpack with each given arguments string in working dir 
+//that supposed to have webpack installed as npm package.
+let webpackBuild = (fun (workingDir, webpackArgs) ->
+    let command = workingDir @@ "node_modules" @@ ".bin" @@ (if EnvironmentHelper.isWindows then "webpack.cmd" else "webpack")
+
+    //Run webpack with specific args in project root as working dir.
+    for args in webpackArgs do
+        printfn "Command: %s %s" command args
+        let exitCode = Shell.Exec(command, args, workingDir)
+        printfn "Exit code: %i" exitCode
 )
