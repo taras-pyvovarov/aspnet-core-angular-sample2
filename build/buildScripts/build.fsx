@@ -1,7 +1,7 @@
 //******Build entry point******
-#r "../packages/fake/tools/FakeLib.dll" 
+#r "./../packages/fake/tools/FakeLib.dll" 
 
-#load "generic.fsx"
+#load "./generic.fsx"
 
 open System.IO
 open Fake

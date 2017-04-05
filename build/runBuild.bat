@@ -23,6 +23,6 @@ ECHO Running FAKE build
 ".\packages\FAKE\tools\Fake.exe" ".\buildScripts\build.fsx"
 
 ::Debug configuration:
-::".\packages\FAKE\tools\Fake.exe" ".\build.fsx" buildType=Debug
+::".\packages\FAKE\tools\Fake.exe" ".\buildScripts\build.fsx" buildType=Debug
 
 exit /b %errorlevel%

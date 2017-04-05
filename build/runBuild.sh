@@ -14,4 +14,9 @@ ECHO Installing build packages
 mono ./.paket/paket.exe install
 
 ECHO Running FAKE build
+
+#Standard configuration:
 mono ./packages/FAKE/tools/Fake.exe ./buildScripts/build.fsx
+
+#Debug configuration:
+#mono ./packages/FAKE/tools/Fake.exe ./buildScripts/build.fsx buildType=Debug
