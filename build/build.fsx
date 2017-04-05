@@ -1,9 +1,11 @@
 //******Build entry point******
-
 #r "./packages/fake/tools/FakeLib.dll" 
+
+#load "generic.fsx"
+
 open System.IO
 open Fake
-open Fake.NpmHelper
+open BuildGeneric
 
 //Working with EnvironmentHelper:
 //http://fsharp.github.io/FAKE/apidocs/fake-environmenthelper.html
@@ -11,8 +13,6 @@ open Fake.NpmHelper
 //http://fsharp.github.io/FAKE/apidocs/fake-filesystemhelper.html
 //Working with DotNetCli:
 //http://fsharp.github.io/FAKE/apidocs/fake-dotnetcli.html
-//Working with NpmHelper:
-//http://fsharp.github.io/FAKE/apidocs/fake-npmhelper.html
 //Working with FileHelper:
 //http://fsharp.github.io/FAKE/apidocs/fake-filehelper.html
 //Working with ZipHelper:
@@ -62,15 +62,6 @@ let dotnetPublish = (fun () ->
     })
 )
 
-//Installs npm packets for entry project.
-let npmInstall = (fun () ->
-    NpmHelper.Npm (fun p ->
-    { p with
-        Command = Install Standard
-        WorkingDirectory = entryProjectRootDir
-    })
-)
-
 //Builds frontent for entry project.
 let webpackBuild = (fun () ->
     let command = entryProjectNodeModules @@ ".bin" @@ if isWindows then "webpack.cmd" else "webpack"
@@ -108,8 +99,10 @@ Target "BuildInitMessage" (fun _ ->
     printfn "Current directory: %s" currentDir
 )
 
+//Installs all packages needed that should be installed during build
 Target "NpmInstall" (fun _ ->
-    npmInstall()
+    //Installting packages for entry project
+    npmInstall(entryProjectRootDir)
 )
 
 Target "WebpackBuild" (fun _ ->

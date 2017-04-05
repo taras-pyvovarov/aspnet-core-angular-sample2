@@ -3,4 +3,4 @@
 source https://api.nuget.org/v3/index.json
 
 //NuGet packages
-nuget FAKE ~> 4.55.0
+nuget FAKE ~> 4.55.1
