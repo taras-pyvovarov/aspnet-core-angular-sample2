@@ -33,6 +33,7 @@ let entryProjectCsproj = entryProjectRootDir @@ "aspnet-core-angular-sample2.csp
 let publishDir = solutionRootDir @@ "publishfiles"
 let publishDirRelative = ".." @@ "publishfiles"
 let publishArchiveDir = solutionRootDir @@ "publisharchive"
+let publishArchivePath = publishArchiveDir @@ "appBuild.zip"
 //All webpack arguments in the order as they are executed.
 let webpackArgs = [| 
     (if isDebug then "" else "-p ") + "--config webpack.config.vendor.js"
@@ -45,13 +46,6 @@ let dotnetVersion = DotNetCli.getVersion ()
 
 let copyNodeModules = (fun () ->
     FileHelper.CopyDir (publishDir @@ "node_modules") (entryProjectRootDir @@ "node_modules") allFiles
-)
-
-//Zips build output into an archive.
-let zipBuildFiles = (fun () ->
-    //In MacOS only relative path is accepted. Absolute is refered as relative.
-    !! (publishDirRelative @@ "**" @@ "*.*") 
-        |> ZipHelper.Zip publishDirRelative (publishArchiveDir @@ "appBuild.zip")
 )
 
 
@@ -69,7 +63,7 @@ Target "BuildInitMessage" (fun _ ->
     printfn "Current directory: %s" currentDir
 )
 
-//Installs all packages needed that should be installed during build
+//Installs all packages needed that should be installed during build.
 Target "NpmInstall" (fun _ ->
     //Installting packages for entry project
     npmInstall(entryProjectRootDir)
@@ -77,10 +71,10 @@ Target "NpmInstall" (fun _ ->
 
 Target "WebpackBuild" (fun _ ->
     //Running webpack for entry project
-    webpackBuild(entryProjectRootDir, webpackArgs)
+    runWebpack(entryProjectRootDir, webpackArgs)
 )
 
-//Builds all dotnet projects needed
+//Builds all dotnet projects needed.
 Target "Build" (fun _ ->
     //Building entry project
     dotnetPublish(isDebug, entryProjectCsproj, publishDir)
@@ -90,8 +84,9 @@ Target "CopyNodeModules" (fun _ ->
     copyNodeModules()
 )
 
+//Zips project build output into zip archive.
 Target "ZipBuildFiles" (fun _ ->
-    zipBuildFiles()
+    zipDir(publishDirRelative, publishArchivePath)
 )
 
 

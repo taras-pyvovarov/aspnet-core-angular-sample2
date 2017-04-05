@@ -34,7 +34,7 @@ let dotnetPublish = (fun (isDebug, csprojFile, publishDir) ->
 
 //Runs webpack with each given arguments string in working dir 
 //that supposed to have webpack installed as npm package.
-let webpackBuild = (fun (workingDir, webpackArgs) ->
+let runWebpack = (fun (workingDir, webpackArgs) ->
     let command = workingDir @@ "node_modules" @@ ".bin" @@ (if EnvironmentHelper.isWindows then "webpack.cmd" else "webpack")
 
     //Run webpack with specific args in project root as working dir.
@@ -42,4 +42,11 @@ let webpackBuild = (fun (workingDir, webpackArgs) ->
         printfn "Command: %s %s" command args
         let exitCode = Shell.Exec(command, args, workingDir)
         printfn "Exit code: %i" exitCode
+)
+
+//Zips dir to archive with all nested contents into a zip archive placed by given path.
+let zipDir = (fun (toArchiveDirRelative, outputArchivePath) ->
+    //In MacOS only relative path is accepted. Absolute is refered as relative.
+    !! (toArchiveDirRelative @@ "**" @@ "*.*") 
+        |> ZipHelper.Zip toArchiveDirRelative outputArchivePath
 )
