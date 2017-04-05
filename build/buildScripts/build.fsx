@@ -30,9 +30,10 @@ let currentDir = FileSystemHelper.currentDirectory
 let solutionRootDir = Directory.GetParent(currentDir).FullName;
 let entryProjectRootDir = solutionRootDir @@ "src" @@ "aspnet-core-angular-sample2";
 let entryProjectNodeModules = entryProjectRootDir @@ "node_modules";
+let entryProjectCsproj = entryProjectRootDir @@ "aspnet-core-angular-sample2.csproj";
 let publishDir = solutionRootDir @@ "publishfiles"
-let publishArchiveDir = solutionRootDir @@ "publisharchive"
 let publishDirRelative = ".." @@ "publishfiles"
+let publishArchiveDir = solutionRootDir @@ "publisharchive"
 //All webpack arguments in the order as they are executed.
 let webpackArgs = [| 
     (if isDebug then "" else "-p ") + "--config webpack.config.vendor.js"
@@ -42,25 +43,6 @@ let dotnetVersion = DotNetCli.getVersion ()
 
 
 //******Build logic******
-
-//Makes publish of entry project. It will build entire dotnet app.
-let dotnetPublish = (fun () ->
-    DotNetCli.Restore (fun p -> 
-    { p with 
-        NoCache = true;
-        Project = entryProjectRootDir @@ "aspnet-core-angular-sample2.csproj";
-    })
-
-    DotNetCli.Publish (fun p -> 
-    { p with 
-        Configuration = if isDebug then "Debug" else "Release";
-        Project = entryProjectRootDir @@ "aspnet-core-angular-sample2.csproj";
-        //dotnet CLI publish interprets relative path with project folder as a starting point
-        //MacOS doest allow '..' navigation inside path
-        //Output = @"..\..\buildArtifact";
-        Output = publishDir;
-    })
-)
 
 //Builds frontent for entry project.
 let webpackBuild = (fun () ->
@@ -109,8 +91,9 @@ Target "WebpackBuild" (fun _ ->
     webpackBuild()
 )
 
+//Builds all dotnet projects needed
 Target "Build" (fun _ ->
-    dotnetPublish()
+    dotnetPublish(isDebug, entryProjectCsproj, publishDir)
 )
 
 Target "CopyNodeModules" (fun _ ->

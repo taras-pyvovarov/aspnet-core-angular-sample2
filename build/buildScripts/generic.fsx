@@ -15,3 +15,22 @@ let npmInstall = (fun (workingDir) ->
         WorkingDirectory = workingDir
     })
 )
+
+//Makes restore and publish of given csproj into publish dir. Will do debug or release build depending in flag.
+let dotnetPublish = (fun (isDebug, csprojFile, publishDir) ->
+    DotNetCli.Restore (fun p -> 
+    { p with 
+        NoCache = true;
+        Project = csprojFile;
+    })
+
+    DotNetCli.Publish (fun p -> 
+    { p with 
+        Configuration = if isDebug then "Debug" else "Release";
+        Project = csprojFile;
+        //dotnet CLI publish interprets relative path with project folder as a starting point
+        //MacOS doest allow '..' navigation inside path
+        //Output = @"..\..\buildArtifact";
+        Output = publishDir;
+    })
+)
