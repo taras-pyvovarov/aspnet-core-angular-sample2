@@ -45,6 +45,13 @@ let dotnetVersion = DotNetCli.getVersion ()
 //******Build logic******
 
 let copyNodeModules = (fun () ->
+    //Include: 
+    //@angular, angular2*, aspnet*
+    //domain-*
+    //es6-promise, es6-shim
+    //preboot, prepend-http, preserve, process, process-nextick-args
+    //reflect-metadata, rxjs
+    //zone.js
     FileHelper.CopyDir (publishDir @@ "node_modules") (entryProjectRootDir @@ "node_modules") allFiles
 )
 
