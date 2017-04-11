@@ -1,10 +1,10 @@
 ﻿import 'angular2-universal-polyfills/browser';
 import { enableProdMode } from '@angular/core';
-import { platformUniversalDynamic } from 'angular2-universal';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './root-module';
 
-//!!!
+//Add bootstrap import, so bundler will resolve it as a dependency.
 //Without import, bootstrap js logics is not working.
 import 'bootstrap';
 
@@ -17,7 +17,7 @@ if (module['hot']) {
     enableProdMode();
 }
 
-const platform = platformUniversalDynamic();
+const platform = platformBrowserDynamic();
 
 //!!! remove?
 const bootApplication = () => { platform.bootstrapModule(AppModule); };

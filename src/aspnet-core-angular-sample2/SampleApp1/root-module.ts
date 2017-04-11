@@ -2,7 +2,8 @@
 //Angular module class describes how the application parts fit together.
 
 import { NgModule } from '@angular/core';
-import { UniversalModule } from 'angular2-universal';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServerModule } from '@angular/platform-server';
 import { RouterModule } from '@angular/router';
 
 //App components.
@@ -26,7 +27,9 @@ import { CalculatorComponent } from './components/calculator-component/calculato
 
     imports: [
         //Must be first import. This automatically imports BrowserModule, HttpModule, and JsonpModule too.
-        UniversalModule,
+        ServerModule,
+
+        BrowserAnimationsModule,
 
         //!!!
         RouterModule.forRoot([
